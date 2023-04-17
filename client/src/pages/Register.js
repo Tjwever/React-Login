@@ -13,16 +13,8 @@ export default function Register() {
                     <input id='last-name' type='text' />
                 </div>
                 <div>
-                    <label htmlFor='birthday'>Birthday: </label>
-                    <input id='birthday' type='text' />
-                </div>
-                <div>
                     <label htmlFor='email'>Email: </label>
                     <input id='email' type='email' />
-                </div>
-                <div>
-                    <label htmlFor='occupation'>Occupation: </label>
-                    <input id='occupation' type='text' />
                 </div>
                 <div>
                     <label htmlFor='password'>Password: </label>

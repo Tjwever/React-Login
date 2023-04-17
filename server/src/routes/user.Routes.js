@@ -1,24 +1,20 @@
-const express = require('express');
-const router = express.Router();
+const express = require('express')
+const router = express.Router()
 
 const {
     register,
     login,
-    validateToken,
     getAll,
     getByID,
     getByEmail,
     updateUserInfo,
     del,
-} = require('../controllers/user.Controller');
-const { deleteOne } = require('../models/user.Schema');
+} = require('../controllers/user.Controller')
+const { deleteOne } = require('../models/user.Schema')
 
+router.post('/register', register)
 
-router.post('/register', register);
-
-router.post('/login', login);
-
-router.get('/validate', validateToken)
+router.post('/login', login)
 
 router.get('/', getAll)
 
