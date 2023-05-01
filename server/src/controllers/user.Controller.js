@@ -17,9 +17,11 @@ const register = asyncWrapper(async (req, res) => {
     const user = await User.create({ ...req.body })
     const token = generateToken(user)
 
+    const { first_name: new_first_name, last_name: new_last_name, email: new_email, auth_level: new_auth_level, createdAt: new_createdAt } = user.toObject()
+
     res.status(201).json({
         status: 'ok',
-        data: user,
+        data: { first_name: new_first_name, last_name: new_last_name, email: new_email, auth_level: new_auth_level, createdAt: new_createdAt },
         token: token,
         msg: 'new user registered',
     })
