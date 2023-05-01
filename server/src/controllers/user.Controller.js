@@ -71,7 +71,9 @@ const getByEmail = asyncWrapper(async (req, res) => {
 })
 
 const getAll = asyncWrapper(async (req, res) => {
-    const users = await User.find({})
+    const users = await User.find({}).select(
+        'first_name last_name email auth_level createdAt'
+    )
     res.status(200).json({ status: 'ok', data: users })
 })
 
