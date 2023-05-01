@@ -17,9 +17,6 @@ const UserSchema = new mongoose.Schema({
         max: 20,
 
     },
-    birthday: {
-        type: Date
-    },
     email: {
         type: String,
         trim: true,
@@ -35,19 +32,9 @@ const UserSchema = new mongoose.Schema({
         min: 6,
         required: true
     },
-    status: {
-        type: String,
-        trim: true,
-    },
-    location: {
-        type: String,
-    },
     auth_level: {
         type: String,
         default: 'basic'
-    },
-    occupation: {
-        type: String,
     },
 }, { timestamps: true })
 
