@@ -27,39 +27,6 @@ const register = asyncWrapper(async (req, res) => {
     })
 })
 
-const login = asyncWrapper(async (req, res) => {
-    const { email, password } = req.body
-
-    const user = await User.findOne({ email })
-
-    if (!user) {
-        //if no user
-        return res.status(400).json({ msg: 'user does not exist' })
-    }
-
-    const isPasswordCorrect = await user.comparePassword(password)
-    if (!isPasswordCorrect) {
-        //if password is incorrect
-        return res.status(400).json({ msg: 'incorrect password' })
-    }
-
-    const basicUser = {
-        first_name: user.first_name,
-        last_name: user.last_name,
-        email: user.email,
-        auth_level: user.auth_level,
-    }
-
-    const token = generateToken(user)
-
-    res.status(200).json({
-        status: 'ok',
-        user: basicUser,
-        token: token,
-        msg: 'login success',
-    })
-})
-
 const getByEmail = asyncWrapper(async (req, res) => {
     const { email } = req.params
     const user = await User.findOne({ email: email })
@@ -111,7 +78,6 @@ const del = asyncWrapper(async (req, res) => {
 
 module.exports = {
     register,
-    login,
     getAll,
     getByID,
     getByEmail,

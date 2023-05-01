@@ -3,7 +3,7 @@ const router = express.Router()
 
 const {
     register,
-    login,
+    // login,
     getAll,
     getByID,
     getByEmail,
@@ -14,7 +14,7 @@ const { deleteOne } = require('../models/user.Schema')
 
 router.post('/register', register)
 
-router.post('/login', login)
+// router.post('/login', login)
 
 router.get('/', getAll)
 
