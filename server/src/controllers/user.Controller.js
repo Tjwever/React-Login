@@ -11,19 +11,38 @@ const generateToken = (user) => {
 const register = asyncWrapper(async (req, res) => {
     const { first_name, last_name, email, password, auth_level } = req.body
     // Check required fields
-    // if (!first_name || !last_name || !email || !password || !birthday || !location) {
-    //     return res.status(400).json({ msg: "Please enter all fields" });
-    // }
+    if (!first_name || !last_name || !email || !password) {
+        return res.status(400).json({ msg: 'Please enter all fields' })
+    }
+
+    const duplicate = await User.findOne({ first_name }).lean().exec()
+
+    if (duplicate) {
+        return res.status(409).json({ msg: 'Duplicate user' })
+    }
+
     const user = await User.create({ ...req.body })
     const token = generateToken(user)
 
-    const { first_name: new_first_name, last_name: new_last_name, email: new_email, auth_level: new_auth_level, createdAt: new_createdAt } = user.toObject()
+    const {
+        first_name: new_first_name,
+        last_name: new_last_name,
+        email: new_email,
+        auth_level: new_auth_level,
+        createdAt: new_createdAt,
+    } = user.toObject()
 
     res.status(201).json({
         status: 'ok',
-        data: { first_name: new_first_name, last_name: new_last_name, email: new_email, auth_level: new_auth_level, createdAt: new_createdAt },
+        data: {
+            first_name: new_first_name,
+            last_name: new_last_name,
+            email: new_email,
+            auth_level: new_auth_level,
+            createdAt: new_createdAt,
+        },
         token: token,
-        msg: 'new user registered',
+        msg: `${new_first_name} has been registered as a new user!`,
     })
 })
 
@@ -40,9 +59,12 @@ const getByEmail = asyncWrapper(async (req, res) => {
 })
 
 const getAll = asyncWrapper(async (req, res) => {
-    const users = await User.find({}).select(
-        'first_name last_name email auth_level createdAt'
-    )
+    const users = await User.find({})
+        .select('first_name last_name email auth_level createdAt')
+        .lean()
+    if (!users?.length) {
+        return res.status(400).json({ msg: 'Day aint no users' })
+    }
     res.status(200).json({ status: 'ok', data: users })
 })
 
@@ -57,13 +79,22 @@ const getByID = asyncWrapper(async (req, res) => {
 
 const updateUserInfo = asyncWrapper(async (req, res) => {
     const { id: userID } = req.params
+    // const { email } = req.body
     const user = await User.findByIdAndUpdate({ _id: userID }, req.body, {
         new: true,
         runValidators: true,
     })
+
+    // const duplicate = await User.findOne({ email }).lean().exec()
+
+    // if (duplicate && duplicate?._id.toString() !== id) {
+    //     return res.status(409).json({ msg: 'Duplicate user' })
+    // }
+
     if (!user) {
         return res.status(404).json({ msg: `No user with id ${userID}` })
     }
+    
     res.status(200).json({ user })
 })
 

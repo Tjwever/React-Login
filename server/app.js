@@ -17,10 +17,6 @@ app.use(logger)
 app.use(express.json())
 app.use(cookieParser())
 
-app.get('/hello', (req, res) => {
-    res.status(200).json({ msg: 'superfwiends 4ever' })
-})
-
 app.use('/api/v1/user', userRoutes)
 app.use('/api/v1/auth', authRoutes)
 
