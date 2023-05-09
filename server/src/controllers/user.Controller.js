@@ -1,6 +1,6 @@
 const User = require('../models/user.Schema')
 const jwt = require('jsonwebtoken')
-const asyncWrapper = require('../middlware/asyncWrapper')
+const asyncWrapper = require('../middleware/asyncWrapper')
 
 const generateToken = (user) => {
     return jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
@@ -22,7 +22,7 @@ const register = asyncWrapper(async (req, res) => {
     }
 
     const user = await User.create({ ...req.body })
-    const token = generateToken(user)
+    // const token = generateToken(user)
 
     const {
         first_name: new_first_name,
@@ -41,7 +41,7 @@ const register = asyncWrapper(async (req, res) => {
             auth_level: new_auth_level,
             createdAt: new_createdAt,
         },
-        token: token,
+        // token: token,
         msg: `${new_first_name} has been registered as a new user!`,
     })
 })
