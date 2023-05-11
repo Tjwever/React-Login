@@ -1,7 +1,18 @@
+import { useContext } from 'react'
+import AuthContext from '../shared/AuthContext'
+
 export default function Home() {
+    const authContext = useContext(AuthContext)
+
+    console.log('From Home: ', authContext.isLoggedIn)
+
     return (
         <div className='App'>
-            <h1>Home</h1>
+            {authContext.isLoggedIn ? (
+                <h1>Home</h1>
+            ) : (
+                <h1>Access Denied...</h1>
+            )}
         </div>
     )
 }

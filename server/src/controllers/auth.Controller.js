@@ -64,8 +64,6 @@ const login = asyncWrapper(async (req, res) => {
 const refresh = (req, res) => {
     const cookies = req.cookies
 
-    console.log(cookies)
-
     if (!cookies?.jwt) {
         return res.status(401).json({ msg: 'Unauthorized' })
     }
@@ -79,10 +77,6 @@ const refresh = (req, res) => {
             if (err) return res.status(403).json({ message: 'Forbidden' })
 
             const user = await User.findOne({ id: decoded.id }).exec()
-
-            console.log('======================================')
-            console.log(user)
-            console.log('======================================')
 
             if (!user) {
                 return res
