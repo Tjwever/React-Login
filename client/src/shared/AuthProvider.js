@@ -9,16 +9,17 @@ export default function AuthProvider(props) {
         const getCurrentUsers = async () => {
             try {
                 const response = await fetch(
-                    'http://localhost:4000/api/v1/user', { Authorization: 'Bearer ' + localStorage.getItem('jwt')}
+                    'http://localhost:4000/api/v1/user',
+                    { Authorization: 'Bearer ' + localStorage.getItem('jwt') }
                 )
 
-                if(response.ok) {
+                if (response.ok) {
                     const data = response.json()
                     console.log(data)
                     setUsers(data)
                 }
             } catch (error) {
-                console.error('Error:', error)
+                // console.error('Error:', error)
             }
         }
 
@@ -50,7 +51,7 @@ export default function AuthProvider(props) {
             }
         }
         //uncomment when ready to link it up
-        getCurrentUsers()
+        // getCurrentUsers()
         checkLoggedInStatus()
     }, [])
 
