@@ -7,12 +7,11 @@ export default function Login() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const authContext = useContext(AuthContext)
-    const [loggedIn, setLoggedIn] = useState(authContext.isLoggedIn)
 
     const navigate = useNavigate()
 
     useEffect(() => {
-        if(authContext.isLoggedIn) {
+        if (authContext.isLoggedIn) {
             navigate('/')
         }
     }, [authContext.isLoggedIn])
@@ -21,10 +20,6 @@ export default function Login() {
         e.preventDefault()
 
         authContext.login(email, password)
-        // console.log('Is Logged in: ', authContext.isLoggedIn)
-
-        // setLoggedIn(true)
-        // navigate('/')
     }
 
     return (

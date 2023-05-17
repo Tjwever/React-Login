@@ -2,38 +2,19 @@ import { useState, useEffect } from 'react'
 import AuthContext from './AuthContext'
 
 export default function AuthProvider(props) {
-    const [users, setUsers] = useState([])
-    const [isLoggedIn, setIsLoggedIn] = useState(false)
+    const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('isLoggedIn') === 'true')
 
+    console.log('authProvider.js: ', isLoggedIn)
+    
     useEffect(() => {
-        const getCurrentUsers = async () => {
-            try {
-                const response = await fetch(
-                    'http://localhost:4000/api/v1/user',
-                    { Authorization: 'Bearer ' + localStorage.getItem('jwt') }
-                )
-
-                if (response.ok) {
-                    const data = response.json()
-                    console.log(data)
-                    setUsers(data)
-                }
-            } catch (error) {
-                // console.error('Error:', error)
-            }
-        }
-
         const checkLoggedInStatus = async () => {
             try {
-                console.log('auth mounted')
                 const response = await fetch(
                     'http://localhost:4000/api/v1/auth/refresh',
                     {
                         credentials: 'include', // Include cookies in the request
                     }
                 )
-
-                console.log(response)
 
                 if (response.ok) {
                     const data = await response.json()
@@ -44,7 +25,7 @@ export default function AuthProvider(props) {
                     setIsLoggedIn(true)
                 } else {
                     // Handle errors (e.g., no valid refresh token)
-                    setIsLoggedIn(false)
+                    setIsLoggedIn(localStorage.getItem('isLoggedIn') === 'true')
                 }
             } catch (error) {
                 console.error('Error:', error)
@@ -69,14 +50,11 @@ export default function AuthProvider(props) {
                 }
             )
 
-            if (
-                response.ok &&
-                email === 'wever@mail.com' &&
-                password === 'password'
-            ) {
+            if (response.ok) {
                 const data = await response.json()
                 // Store JWT in local storage or cookies
                 localStorage.setItem('jwt', data.token)
+                localStorage.setItem('isLoggedIn', 'true')
                 setIsLoggedIn(true)
             } else {
                 // Handle errors (e.g., invalid credentials)
@@ -104,6 +82,7 @@ export default function AuthProvider(props) {
             if (response.ok) {
                 // Remove JWT from local storage or cookies
                 localStorage.removeItem('jwt')
+                localStorage.removeItem('isLoggedIn')
                 setIsLoggedIn(false)
             } else {
                 // Handle errors (e.g., failed to log out)
