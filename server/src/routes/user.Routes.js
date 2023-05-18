@@ -12,9 +12,9 @@ const {
 const { deleteOne } = require('../models/user.Schema')
 const verifyJWT = require('../middleware/verifyJWT')
 
-router.use(verifyJWT)
-
 router.post('/register', register)
+
+router.use(verifyJWT)
 
 router.get('/', getAll)
 

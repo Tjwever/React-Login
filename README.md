@@ -1,6 +1,6 @@
-## Basic Login system.
+# Basic Login system.
 
-# Understanding how JWT's are working
+## Understanding how JWT's are working
 
 ---
 
